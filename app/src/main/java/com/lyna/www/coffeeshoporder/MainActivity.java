@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else {
             order_list = new ArrayList<>();
-            order_list.add("Order list");
+            order_list.add("Empty Order");
             arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_list);
         }
 

@@ -27,7 +27,8 @@
                 android:layout_weight="1"
                 android:text="주문 관리"
                 android:textAlignment="center"
-                android:textColor="@android:color/background_light"
+                android:background="#ffffff"
+                android:textColor="#000000"
                 android:textSize="24sp" />
         </LinearLayout>
 
@@ -42,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="viewEnd"
-                android:textColor="@android:color/background_light" />
+                android:background="#ffffff"
+                android:textColor="#000000" />
         </LinearLayout>
 
         <LinearLayout
@@ -96,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주문 목록"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -129,9 +131,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
+            android:background="#f9f2ec"
+            android:focusable="auto"
             android:horizontalSpacing="8dp"
             android:numColumns="2"
-            android:verticalSpacing="8dp" />
+            android:verticalSpacing="20dp"
+            tools:elevation="@dimen/cardview_default_radius" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

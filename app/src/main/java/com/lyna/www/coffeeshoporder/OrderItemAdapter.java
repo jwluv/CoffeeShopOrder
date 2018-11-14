@@ -133,35 +133,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
 
         @Override
         public void onClick(View view) {
-//            HashMap<String,Object> hashMap = new HashMap<String,Object>();
-//            int ea;
-//            switch(view.getId()) {
-//                case R.id.buttonOrderItemAdd:
-//                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
-//                    ea += 1;
-//                    textViewOrderItemEA.setText(String.valueOf(ea));
-//
-//                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
-//                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
-//                    hashMap.put("ea", String.valueOf(ea));
-//
-//                    updateItem(id, hashMap);
-//
-//                    break;
-//                case R.id.buttonOrderItemSub:
-//                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
-//                    if(ea > 0)
-//                        ea -= 1;
-//                    textViewOrderItemEA.setText(String.valueOf(ea));
-//
-//                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
-//                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
-//                    hashMap.put("ea", String.valueOf(ea));
-//
-//                    updateItem(id, hashMap);
-//                    break;
 
-//            }
         }
 
 
