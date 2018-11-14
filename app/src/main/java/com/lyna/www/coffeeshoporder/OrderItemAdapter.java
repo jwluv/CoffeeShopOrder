@@ -11,17 +11,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
 
-    Context mContext;
-    CustomItemClickListener listener;
+    OrderActivity orderActivity;
     ArrayList<HashMap<String,Object>> arrayList = null;
-    public OrderItemAdapter(Context mContext, ArrayList<HashMap<String,Object>> arrayList, CustomItemClickListener listener) {
-        this.mContext = mContext;
-        this.listener = listener;
+
+
+    public OrderItemAdapter(OrderActivity orderActivity, ArrayList<HashMap<String,Object>> arrayList) {
+        this.orderActivity = orderActivity;
         this.arrayList = new ArrayList<HashMap<String, Object>>();
         this.arrayList = arrayList;
     }
@@ -48,23 +51,55 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         HashMap<String,Object> hashMap = arrayList.get(i);
         myViewHolder.id = i;
         myViewHolder.textViewOrderItemMenu.setText((String)hashMap.get("menu"));
         myViewHolder.textViewOrderItemPrice.setText((String) hashMap.get("price"));
         myViewHolder.textViewOrderItemEA.setText((String) hashMap.get("ea"));
 
-//        ((MainActivity)mContext).textViewOrderedMenu.setText("");
-//        mContext.textViewOrderedMenu.setText("");
+        myViewHolder.buttonOrderItemAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-//        mContext.
-//        myViewHolder.textViewMenuItemMenu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(), "Menu clicked", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+                HashMap<String,Object> hashMap = new HashMap<String,Object>();
+                int ea;
+
+                ea =  Integer.parseInt(myViewHolder.textViewOrderItemEA.getText().toString());
+                ea += 1;
+                    myViewHolder.textViewOrderItemEA.setText(String.valueOf(ea));
+
+                hashMap.put("menu", myViewHolder.textViewOrderItemMenu.getText().toString());
+                hashMap.put("price", myViewHolder.textViewOrderItemPrice.getText().toString());
+                hashMap.put("ea", String.valueOf(ea));
+
+                updateItem(myViewHolder.id, hashMap);
+
+                orderActivity.displayOrder();
+            }
+
+        });
+
+        myViewHolder.buttonOrderItemSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String,Object> hashMap = new HashMap<String,Object>();
+                int ea;
+                ea =  Integer.parseInt(myViewHolder.textViewOrderItemEA.getText().toString());
+                if(ea > 0)
+                    ea -= 1;
+                myViewHolder.textViewOrderItemEA.setText(String.valueOf(ea));
+
+                hashMap.put("menu", myViewHolder.textViewOrderItemMenu.getText().toString());
+                hashMap.put("price", myViewHolder.textViewOrderItemPrice.getText().toString());
+                hashMap.put("ea", String.valueOf(ea));
+
+                updateItem(myViewHolder.id, hashMap);
+
+                orderActivity.displayOrder();
+            }
+        });
+
     }
 
     @Override
@@ -98,34 +133,35 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyVi
 
         @Override
         public void onClick(View view) {
-            HashMap<String,Object> hashMap = new HashMap<String,Object>();
-            int ea;
-            switch(view.getId()) {
-                case R.id.buttonOrderItemAdd:
-                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
-                    ea += 1;
-                    textViewOrderItemEA.setText(String.valueOf(ea));
+//            HashMap<String,Object> hashMap = new HashMap<String,Object>();
+//            int ea;
+//            switch(view.getId()) {
+//                case R.id.buttonOrderItemAdd:
+//                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
+//                    ea += 1;
+//                    textViewOrderItemEA.setText(String.valueOf(ea));
+//
+//                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
+//                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
+//                    hashMap.put("ea", String.valueOf(ea));
+//
+//                    updateItem(id, hashMap);
+//
+//                    break;
+//                case R.id.buttonOrderItemSub:
+//                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
+//                    if(ea > 0)
+//                        ea -= 1;
+//                    textViewOrderItemEA.setText(String.valueOf(ea));
+//
+//                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
+//                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
+//                    hashMap.put("ea", String.valueOf(ea));
+//
+//                    updateItem(id, hashMap);
+//                    break;
 
-                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
-                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
-                    hashMap.put("ea", String.valueOf(ea));
-
-                    updateItem(id, hashMap);
-                    break;
-                case R.id.buttonOrderItemSub:
-                    ea =  Integer.parseInt(textViewOrderItemEA.getText().toString());
-                    if(ea > 0)
-                        ea -= 1;
-                    textViewOrderItemEA.setText(String.valueOf(ea));
-
-                    hashMap.put("menu", textViewOrderItemMenu.getText().toString());
-                    hashMap.put("price", textViewOrderItemPrice.getText().toString());
-                    hashMap.put("ea", String.valueOf(ea));
-
-                    updateItem(id, hashMap);
-                    break;
-
-            }
+//            }
         }
 
 

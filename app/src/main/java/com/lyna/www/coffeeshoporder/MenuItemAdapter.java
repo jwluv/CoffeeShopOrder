@@ -41,7 +41,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MyView
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         HashMap<String,Object> hashMap = arrayList.get(i);
         myViewHolder.textViewMenuItemMenu.setText((String)hashMap.get("menu"));
-        myViewHolder.textViewMenuItemPrice.setText((String) hashMap.get("price"));
+        myViewHolder.textViewMenuItemPrice.setText((String) hashMap.get("price") + "원");
 
         myViewHolder.textViewMenuItemMenu.setOnClickListener(new View.OnClickListener() {
             @Override

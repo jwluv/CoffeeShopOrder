@@ -1,5 +1,6 @@
 package com.lyna.www.coffeeshoporder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -67,6 +69,10 @@ public class MenuEditActivity extends AppCompatActivity implements View.OnClickL
                 hashMap.put("menu", editTextMenuEditName.getText().toString());
                 hashMap.put("price", editTextMenuEditPrice.getText().toString());
                 menuItemAdapter.addItem(20,hashMap);
+                editTextMenuEditName.setText("");
+                editTextMenuEditPrice.setText("");
+                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 break;
             case R.id.buttonMenuEditSave:
 //                String query = "SELECT * FROM db_menu;";

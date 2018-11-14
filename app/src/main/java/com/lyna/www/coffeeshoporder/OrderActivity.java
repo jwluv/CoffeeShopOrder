@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class OrderActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class OrderActivity extends AppCompatActivity implements View.OnClickListener{
     OrderDBHelper orderDBHelper;
     SQLiteDatabase mdb;
     Cursor cursor;
@@ -32,6 +32,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     RecyclerView recyclerViewMenuList;
     RecyclerView.LayoutManager layoutManager;
     OrderItemAdapter orderItemAdapter;
+
+    TextView textViewOrderedMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,26 +61,19 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
         layoutManager = new LinearLayoutManager(this);
         recyclerViewMenuList.setLayoutManager(layoutManager);
-//        orderItemAdapter = new OrderItemAdapter(arrayList);
 
-        orderItemAdapter = new OrderItemAdapter(this, arrayList, new CustomItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-
-                long postId = position;
-                // do what ever you want to do with it
-            }
-        });
-
+        orderItemAdapter = new OrderItemAdapter(this, arrayList);
 
         recyclerViewMenuList.setAdapter(orderItemAdapter);
         orderNumber = (TextView)findViewById(R.id.orderNumber);
 
+        textViewOrderedMenu = findViewById(R.id.textViewOrderedMenu);
+
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
 
-//            Integer.parseInt(bundle.getString("ItemPosFromMain", "No Data"));
-//            String str = (String)hashMap.get("menu") + (String)hashMap.get("ea");;
+            int id = Integer.parseInt(bundle.getString("ItemPosFromMain", "No Data"));
+            GetOrderItem(id);
 
         }
         else {
@@ -90,7 +85,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 int id = cursor.getInt(0);
                 if(id != 0)
                     id += 1;
-                orderNumber.setText("주문번호 : " + String.valueOf(id));
+                orderNumber.setText(String.valueOf(id));
             }
             ReadMenuFromDB();
         }
@@ -113,11 +108,42 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.buttonOrderCompleted:
                 OrderServingCompleted();
-                intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
                 break;
 
         }
+
+    }
+
+    public void GetOrderItem(int order_id) {
+
+        ArrayList<String> order_list = new ArrayList<>();
+        String query = "SELECT * FROM db_order where _id == '" + order_id + "'";
+        Cursor cursor = mdb.rawQuery(query, null);
+        String str = "";
+
+        orderNumber.setText(String.valueOf(order_id));
+
+        if(cursor.moveToFirst()) {
+            String datetime;
+            int total_price;
+
+            datetime = cursor.getString(cursor.getColumnIndex("datetime"));
+            total_price = cursor.getInt(cursor.getColumnIndex("totalprice"));
+
+            query = "SELECT * FROM db_order_menu where datetime == '" + datetime + "'";
+            cursor = mdb.rawQuery(query, null);
+
+            while(cursor.moveToNext()) {
+               String menu = cursor.getString(cursor.getColumnIndex("menu"));
+               int ea  = cursor.getInt(cursor.getColumnIndex("ea"));
+
+               if(ea != 0)
+                 str += menu + ": " + ea + " 개\n";
+            }
+            str += "\nTotal: " + String.valueOf(total_price) + "원" + "\t       결제완료/서빙 준비중";
+            textViewOrderedMenu.setText(str);
+        }
+
 
     }
 
@@ -138,6 +164,15 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void OrderPayment(){
+
+        String query = "SELECT * FROM db_order where _id == '" + Integer.parseInt(orderNumber.getText().toString()) + "'";
+        Cursor cursor = mdb.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            Toast.makeText(getApplicationContext(), "이미 결제된 주문입니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         HashMap<String, Object> hashMap;
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         int total_price = 0;
@@ -158,32 +193,50 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         else
             Toast.makeText(getApplicationContext(), "Add the menu if you want to order", Toast.LENGTH_SHORT).show();
 
-
-//        String query = "SELECT max(_id) FROM db_order";
-//        Cursor cursor = mdb.rawQuery(query, null);
-//
-//        if(cursor.getCount()>0) {
-//            cursor.moveToFirst();
-//            int id = cursor.getInt(0);
-//
-//            hashMap.put("price", editTextMenuEditPrice.getText().toString());
-//            hashMap1. String.valueOf(id));
-//        }
     }
 
     public void OrderServingCompleted(){
-        String query = "UPDATE db_order SET served=1 WHERE _id='" + orderNumber.getText().toString() +"'";
+
+        int i = Integer.parseInt(orderNumber.getText().toString());
+        String query = "SELECT * FROM db_order where _id == '" + Integer.parseInt(orderNumber.getText().toString()) + "'";
+        Cursor cursor = mdb.rawQuery(query, null);
+
+        if(!cursor.moveToFirst()) {
+            Toast.makeText(getApplicationContext(), "미 결제된 주문입니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        query = "UPDATE db_order SET served=1 WHERE _id='" + orderNumber.getText().toString() +"'";
         mdb.execSQL(query);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//        String pos = adapterView.getItemAtPosition(i);
-//
-//        Bundle bundle = new Bundle();
-//        Intent intent = new Intent(this, OrderActivity.class);
-//        bundle.putString("ItemPosFromMain", pos);
-//        intent.putExtras(bundle);
-//        startActivity(intent);
+    public void displayOrder() {
+
+        HashMap<String, Object> hashMap;
+        int total_price = 0;
+        String strOrder = "";
+
+        for(int i=0; i<orderItemAdapter.getItemCount(); i++){
+            hashMap = orderItemAdapter.getItem(i);
+            if( Integer.parseInt((String)hashMap.get("ea")) != 0){
+                String str_price = (String)hashMap.get("price");
+                String str_ea = (String)hashMap.get("ea");
+                int ea = Integer.parseInt(str_ea);
+
+                total_price += Integer.parseInt(str_price)*ea;
+                strOrder += (String)hashMap.get("menu") + ": " + ea + "개 \n";
+            }
+            else {
+
+            }
+
+        }
+
+        strOrder += "\nTotal: " + String.valueOf(total_price) + " 원";
+
+        textViewOrderedMenu.setText(strOrder);
     }
 }

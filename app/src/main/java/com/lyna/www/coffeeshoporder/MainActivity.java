@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonNewOrder.setOnClickListener(this);
 
-        ArrayList<String> order_list = GetOrderList();
+        ArrayList<String> order_list = GetOrderListNotServed();
 
         if(order_list != null) {
             arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_list);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    public ArrayList<String> GetOrderList() {
+    public ArrayList<String> GetOrderListNotServed() {
 
         ArrayList<String> order_list = new ArrayList<>();
         String query = "SELECT * FROM db_order where served == 0";
@@ -120,13 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mdb.execSQL("INSERT INTO db_menu VALUES(null, '" + menus[i] + "', '" + prices[i] + "' );");
         }
 
-//        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-//        mdb.execSQL("INSERT INTO db_order VALUES(null, '" +currentDateTimeString + "', 5000, 0 );");
-//
-//        currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-//        mdb.execSQL("INSERT INTO db_order VALUES(null, '" +currentDateTimeString + "', 8000, 0 );");
-//
-//        currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-//        mdb.execSQL("INSERT INTO db_order VALUES(null, '" +currentDateTimeString + "', 7500, 0 );");
     }
+
+
 }

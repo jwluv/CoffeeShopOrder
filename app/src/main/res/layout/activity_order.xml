@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:background="@drawable/menu1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/orderLayer"
@@ -14,20 +20,33 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/textView3"
+            android:layout_width="54dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="Order No."
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
             android:id="@+id/orderNumber"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="@string/orderNumber"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/buttonOrderMenuEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
-            android:text="Menu Edit" />
+            android:background="@drawable/button_edit" />
     </LinearLayout>
 
 
@@ -47,33 +66,34 @@
 
         <Button
             android:id="@+id/buttonOrderPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="80dp"
+            android:layout_height="38dp"
             android:layout_weight="1"
-            android:text="결제"
+            android:background="@drawable/button_payment"
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/buttonOrderCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="38dp"
             android:layout_weight="1"
-            android:text="취소"
+            android:background="@drawable/button_pay_cancel"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/buttonOrderCompleted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="38dp"
             android:layout_weight="1"
-            android:text="서빙완료" />
+            android:background="@drawable/button_served"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textViewOrderedMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:textSize="18sp" />
 
 </LinearLayout>
