@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,26 +66,17 @@ public class MenuEditActivity extends AppCompatActivity implements View.OnClickL
 
         switch(v.getId()){
             case R.id.buttonMenuEditAdd:
-                HashMap<String,Object> hashMap = new HashMap<String,Object>();
+                HashMap<String, Object> hashMap = new HashMap<String, Object>();
                 hashMap.put("menu", editTextMenuEditName.getText().toString());
                 hashMap.put("price", editTextMenuEditPrice.getText().toString());
-                menuItemAdapter.addItem(20,hashMap);
+                menuItemAdapter.addItem(20, hashMap);
                 editTextMenuEditName.setText("");
                 editTextMenuEditPrice.setText("");
                 InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 break;
             case R.id.buttonMenuEditSave:
-//                String query = "SELECT * FROM db_menu;";
-//                Cursor cursor = mdb.rawQuery(query, null);
-//
-//                if(cursor.getCount()==0) {
-//                    for (int i = 0; i < menuItemAdapter.getItemCount(); i++) {
-//                        HashMap<String,Object> hashMap1 = menuItemAdapter.getItem(i);
-//                        mdb.execSQL("INSERT INTO db_menu VALUES(null, '" + hashMap1.get("menu") + "', '" + hashMap1.get("price") + "' );");
-//                    }
-//                }
-
                 mdb.execSQL("DELETE FROM db_menu");
                 for (int i = 0; i < menuItemAdapter.getItemCount(); i++) {
 

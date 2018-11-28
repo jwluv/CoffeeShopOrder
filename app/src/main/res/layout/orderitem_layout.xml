@@ -61,7 +61,7 @@
 
             <TextView
                 android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="개" />
@@ -73,14 +73,16 @@
 
             <Button
                 android:id="@+id/buttonOrderItemAdd"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/baseline_add_circle_outline_black_18dp"
                 android:text="+" />
 
             <Button
                 android:id="@+id/buttonOrderItemSub"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/baseline_remove_circle_outline_black_18dp"
                 android:text="-" />
         </LinearLayout>
 

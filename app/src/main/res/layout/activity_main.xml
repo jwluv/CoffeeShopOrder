@@ -11,15 +11,13 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="83dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:background="#ffffff"
         android:text="주문 관리"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,34 +25,24 @@
     <TextView
         android:id="@+id/textViewDate"
         android:layout_width="134dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="51dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="61dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="74dp"
         android:layout_weight="1"
         android:background="#ffffff"
         android:textAlignment="viewEnd"
         android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNewOrder"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonNewOrder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewNumOfOrders"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonNewOrder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="39dp"
         android:layout_weight="1"
         android:background="#004d00"
         android:fadingEdge="horizontal|vertical"
@@ -62,29 +50,25 @@
         android:text="새 주문"
         android:textColor="#f9f2ec"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/listViewOrderList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginStart="16dp"
         android:text="주문 목록"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/listViewOrderList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <GridView
         android:id="@+id/listViewOrderList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="67dp"
+        android:layout_marginBottom="70dp"
         android:background="#f9f2ec"
         android:focusable="auto"
         android:horizontalSpacing="8dp"
@@ -93,7 +77,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/buttonNewOrder"
         tools:elevation="@dimen/cardview_default_radius" />
 
 </android.support.constraint.ConstraintLayout>

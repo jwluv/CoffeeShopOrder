@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     OrderDBHelper orderDBHelper;
     SQLiteDatabase mdb;
 
-    TextView textViewDate, textViewNumOfOrders;
+    TextView textViewDate;
     Button buttonNewOrder;
     GridView listViewOrderList;
     ArrayAdapter<String> arrayAdapter;
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        InitializeMenuDB();
 
         textViewDate = findViewById(R.id.textViewDate);
-        textViewNumOfOrders = findViewById(R.id.textViewNumOfOrders);
         buttonNewOrder = findViewById(R.id.buttonNewOrder);
         listViewOrderList = findViewById(R.id.listViewOrderList);
 
@@ -121,6 +120,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
 
 }

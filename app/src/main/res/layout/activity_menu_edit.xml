@@ -31,7 +31,7 @@
 
             <EditText
                 android:id="@+id/editTextMenuEditName"
-                android:layout_width="wrap_content"
+                android:layout_width="354dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -40,7 +40,7 @@
 
             <EditText
                 android:id="@+id/editTextMenuEditPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="268dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
@@ -52,13 +52,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="+" />
+                android:background="@drawable/baseline_add_box_black_18dp" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewMenuItem"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="675dp" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewMenuItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"

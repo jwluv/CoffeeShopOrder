@@ -72,11 +72,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
-
             int id = Integer.parseInt(bundle.getString("ItemPosFromMain", "No Data"));
             GetOrderItem(id);
             orderNumber.setText(String.valueOf(id));
-//            buttonOrderPayment.setBackgroundResource(R.drawable.button_payment_completed);
         }
         else {
             order_query = "SELECT max(_id) FROM db_order";
@@ -90,7 +88,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 orderNumber.setText(String.valueOf(id));
             }
             ReadMenuFromDB();
-//            buttonOrderPayment.setBackgroundResource(R.drawable.button_payment);
         }
     }
 
@@ -112,7 +109,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             case R.id.buttonOrderCompleted:
                 OrderServingCompleted();
                 break;
-
         }
 
     }
@@ -147,8 +143,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
             textViewOrderedMenu.setText(str);
             textViewStatus.setText("\n결제완료/서빙 준비중");
         }
-
-
     }
 
     public void ReadMenuFromDB(){
@@ -236,8 +230,6 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 total_price += Integer.parseInt(str_price)*ea;
                 strOrder += (String)hashMap.get("menu") + ": " + ea + "개 \n";
             }
-
-
         }
 
         strOrder += "\nTotal: " + String.valueOf(total_price) + " 원";
