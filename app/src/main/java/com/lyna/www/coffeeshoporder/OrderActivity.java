@@ -33,7 +33,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     RecyclerView.LayoutManager layoutManager;
     OrderItemAdapter orderItemAdapter;
 
-    TextView textViewOrderedMenu;
+    TextView textViewOrderedMenu, textViewStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +68,15 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         orderNumber = (TextView)findViewById(R.id.orderNumber);
 
         textViewOrderedMenu = findViewById(R.id.textViewOrderedMenu);
+        textViewStatus = findViewById(R.id.textViewStatus);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
 
             int id = Integer.parseInt(bundle.getString("ItemPosFromMain", "No Data"));
             GetOrderItem(id);
-
+            orderNumber.setText(String.valueOf(id));
+//            buttonOrderPayment.setBackgroundResource(R.drawable.button_payment_completed);
         }
         else {
             order_query = "SELECT max(_id) FROM db_order";
@@ -88,6 +90,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 orderNumber.setText(String.valueOf(id));
             }
             ReadMenuFromDB();
+//            buttonOrderPayment.setBackgroundResource(R.drawable.button_payment);
         }
     }
 
@@ -140,8 +143,9 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                if(ea != 0)
                  str += menu + ": " + ea + " 개\n";
             }
-            str += "\nTotal: " + String.valueOf(total_price) + "원" + "\t       결제완료/서빙 준비중";
+            str += "\nTotal: " + String.valueOf(total_price) + "원";
             textViewOrderedMenu.setText(str);
+            textViewStatus.setText("\n결제완료/서빙 준비중");
         }
 
 
@@ -188,8 +192,11 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 total_price += Integer.parseInt(str_price)*ea;
             }
         }
-        if(total_price != 0)
+        if(total_price != 0) {
             mdb.execSQL("INSERT INTO db_order VALUES(null, '" + currentDateTimeString + "', '" + total_price + "', 0);");
+
+            textViewStatus.setText("\n결제완료/서빙 준비중");
+        }
         else
             Toast.makeText(getApplicationContext(), "Add the menu if you want to order", Toast.LENGTH_SHORT).show();
 
@@ -229,9 +236,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 total_price += Integer.parseInt(str_price)*ea;
                 strOrder += (String)hashMap.get("menu") + ": " + ea + "개 \n";
             }
-            else {
 
-            }
 
         }
 
