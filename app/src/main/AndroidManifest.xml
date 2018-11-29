@@ -18,6 +18,11 @@
         </activity>
         <activity android:name=".MenuEditActivity" />
         <activity android:name=".OrderActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBWYPPENMmwK-wYL0P_Ae8vLBBUDL4Yfaw"/>
+
     </application>
 
 </manifest>
