@@ -19,11 +19,11 @@ import java.util.HashMap;
 //public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
 public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.MyViewHolder> {
 
-    OrderActivity orderActivity;
+    OrderFragment orderActivity;
     ArrayList<HashMap<String,Object>> arrayList = null;
 
 
-    public OrderItemAdapter(OrderActivity orderActivity, ArrayList<HashMap<String,Object>> arrayList) {
+    public OrderItemAdapter(OrderFragment orderActivity, ArrayList<HashMap<String,Object>> arrayList) {
         this.orderActivity = orderActivity;
         this.arrayList = new ArrayList<HashMap<String, Object>>();
         this.arrayList = arrayList;

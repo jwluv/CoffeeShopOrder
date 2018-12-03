@@ -2,11 +2,10 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
-    tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="89dp">
+    tools:context=".MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -19,97 +18,80 @@
             <include layout="@layout/tool_bar" />
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:id="@+id/main_framelayout"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"
 
-    </android.support.design.widget.CoordinatorLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="83dp"
-            android:layout_marginBottom="25dp"
-            android:text="주문 관리"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewDate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="33dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonNewOrder"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        <Button
-            android:id="@+id/buttonNewOrder"
-            android:layout_width="128dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="16dp"
-            android:text="주문"
-            android:textSize="30sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="21dp"
-            android:layout_marginBottom="17dp"
-            android:text="주문 목록"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-            app:layout_constraintStart_toStartOf="@+id/scrollView2"
-            app:layout_constraintTop_toBottomOf="@+id/buttonNewOrder" />
-
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginEnd="23dp"
-            android:layout_marginBottom="27dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            android:orientation="vertical"
+            tools:context=".MainActivity">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <GridView
-                    android:id="@+id/listViewOrderList"
+                android:layout_height="0dp"
+                android:layout_weight="9">
+                <FrameLayout
+                    android:id="@+id/main_frame"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:layout_editor_absoluteX="56dp"
-                    tools:layout_editor_absoluteY="315dp">
-
-                </GridView>
+                    android:layout_height="match_parent"></FrameLayout>
             </LinearLayout>
-        </ScrollView>
 
-    </android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/buttonHome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@drawable/button_background">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_home_black_18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonNewOrder"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@drawable/button_background">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/new_order" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buttonMenuEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:background="@drawable/button_background">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/menu_edit" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/main_navigationView"
@@ -120,6 +102,5 @@
         app:menu="@menu/nav_item"
 
         ></android.support.design.widget.NavigationView>
-
 
 </android.support.v4.widget.DrawerLayout>

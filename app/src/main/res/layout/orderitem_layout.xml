@@ -14,8 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="#dab08b">
+            android:background="#f0f0f5"
+            android:orientation="horizontal">
 
             <Space
                 android:layout_width="wrap_content"
@@ -57,14 +57,16 @@
                 android:id="@+id/textViewOrderItemEA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EA" />
+                android:text="EA"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="개" />
+                android:text="개"
+                android:textSize="18sp" />
 
             <Space
                 android:layout_width="wrap_content"

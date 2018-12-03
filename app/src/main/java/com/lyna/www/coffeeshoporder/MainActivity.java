@@ -1,84 +1,105 @@
 package com.lyna.www.coffeeshoporder;
 
-import android.app.Activity;
+import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DateFormat;
+import com.google.android.gms.maps.MapFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener{
 
-    private DrawerLayout drawerLayout;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
     Toolbar toolbar;
+    ImageView toolbar_playpause;
+    int playState = 0;
 
-    OrderDBHelper orderDBHelper;
-    SQLiteDatabase mdb;
+    LinearLayout buttonHome, buttonNewOrder, buttonMenuEdit;
 
-    TextView textViewDate;
-    Button buttonNewOrder;
-    GridView listViewOrderList;
-    ArrayAdapter<String> arrayAdapter;
+    final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 0;
+
+    private MusicService mServiceBinder;
+    private ServiceConnection myConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder binder) {
+            mServiceBinder=((MusicService.MyBinder) binder).getService();
+        }
+        public void onServiceDisconnected(ComponentName className) { mServiceBinder = null; }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(permission != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        }
+
+        Intent intent = new Intent(this, MusicService.class);
+        bindService(intent, myConnection, Context.BIND_AUTO_CREATE);
+
+
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        toolbar_playpause = toolbar.findViewById(R.id.toolbar_playpause);
+        toolbar_playpause.setOnClickListener(this);
+
+        buttonHome = findViewById(R.id.buttonHome);
+        buttonNewOrder = findViewById(R.id.buttonNewOrder);
+        buttonMenuEdit = findViewById(R.id.buttonMenuEdit);
+
+        buttonHome.setOnClickListener(this);
+        buttonNewOrder.setOnClickListener(this);
+        buttonMenuEdit.setOnClickListener(this);
+
         initializeNavigationView();
 
-        orderDBHelper = new OrderDBHelper(this, "orders.db", null, 1);
-        mdb = orderDBHelper.getWritableDatabase();
+        getFragmentManager().beginTransaction().replace(R.id.main_frame, new OrderListFragment()).commit();
 
-//        InitializeMenuDB();
+    }
 
-        textViewDate = findViewById(R.id.textViewDate);
-        buttonNewOrder = findViewById(R.id.buttonNewOrder);
-        listViewOrderList = findViewById(R.id.listViewOrderList);
-
-        //String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        textViewDate.setText(format.format(new Date()));
-
-        buttonNewOrder.setOnClickListener(this);
-
-        ArrayList<String> order_list = GetOrderListNotServed();
-
-        if(order_list != null) {
-            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_list);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION:
+                if(grantResults.length > 0 || grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Log.i("", "Permission(Access Course Location) has been granted by user");
+                break;
         }
-        else {
-            order_list = new ArrayList<>();
-            order_list.add("Empty Order");
-            arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_list);
-        }
-
-        listViewOrderList.setAdapter(arrayAdapter);
-        listViewOrderList.setOnItemClickListener(this);
     }
 
     public void initializeNavigationView() {
@@ -87,81 +108,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.main_navigationView);
+        navigationView = (NavigationView) findViewById(R.id.main_navigationView);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
-                if(item.getItemId() == R.id.first){
-                    getFragmentManager().beginTransaction().replace(R.id.main_framelayout, new NoticeFragment()).commit();
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        if(menuItem.getItemId() == R.id.nav_notice){
+            getFragmentManager().beginTransaction().replace(R.id.main_frame, new NoticeFragment()).commit();
+        }
+        if(menuItem.getItemId() == R.id.nav_location){
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        }
+        if(menuItem.getItemId() == R.id.nav_sale){
+            getFragmentManager().beginTransaction().replace(R.id.main_frame, new SaleFragment()).commit();
+        }
 
-                }
-                if(item.getItemId() == R.id.second){
-                    getFragmentManager().beginTransaction().replace(R.id.main_framelayout, new LocationFragment()).commit();
-                }
 
-                drawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
 
-                return true;
-            }
-        });
+        return true;
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, OrderActivity.class);
-        startActivity(intent);
-    }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String pos = parent.getItemAtPosition(position).toString();
-
-        Bundle bundle = new Bundle();
-        Intent intent = new Intent(this, OrderActivity.class);
-        bundle.putString("ItemPosFromMain", pos);
-        intent.putExtras(bundle);
-        startActivity(intent);
-    }
-
-    public ArrayList<String> GetOrderListNotServed() {
-
-        ArrayList<String> order_list = new ArrayList<>();
-        String query = "SELECT * FROM db_order where served == 0";
-        Cursor cursor = mdb.rawQuery(query, null);
-
-        while(cursor.moveToNext()) {
-            String datetime;
-            int order_id;
-
-            order_id = cursor.getInt(cursor.getColumnIndex("_id"));
-           // datetime = cursor.getString(cursor.getColumnIndex("datetime"));
-
-           // order_list.add(String.valueOf(order_id) + ", " + datetime);
-            order_list.add(String.valueOf(order_id));
+        if(v == toolbar_playpause) {
+            if (playState == 1) {
+                playState = 0;
+                mServiceBinder.stop();
+                toolbar_playpause.setBackgroundResource(R.drawable.baseline_play_circle_outline_black_18dp);
+            } else {
+                playState = 1;
+                mServiceBinder.play(1);
+                toolbar_playpause.setBackgroundResource(R.drawable.baseline_pause_circle_outline_black_18dp);
+            }
         }
-
-        if(order_list.size()>0)
-            return order_list;
-        else
-            return null;
-
-    }
-
-    public void InitializeMenuDB(){
-
-        String[] menus = new String[]{"Americano", "Caffe Latte", "Egg Toast", "Ham Toast", "Sandwitch", "Scone"};
-        Integer[] prices = new Integer[]{2000, 3000, 3000, 4000, 4000, 2500};
-
-        String query = "SELECT * FROM db_menu;";
-        Cursor cursor = mdb.rawQuery(query, null);
-
-        if(cursor.getCount()==0) {
-            for (int i = 0; i < menus.length; i++)
-                mdb.execSQL("INSERT INTO db_menu VALUES(null, '" + menus[i] + "', '" + prices[i] + "' );");
-        }
-
+        else if(v == buttonHome)
+            getFragmentManager().beginTransaction().replace(R.id.main_frame, new OrderListFragment()).commit();
+        else if(v == buttonNewOrder)
+            getFragmentManager().beginTransaction().replace(R.id.main_frame, new OrderFragment()).commit();
+        else if(v == buttonMenuEdit)
+            getFragmentManager().beginTransaction().replace(R.id.main_frame, new MenuEditFragment()).commit();
     }
 
 }

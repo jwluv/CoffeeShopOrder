@@ -7,13 +7,13 @@
     >
 
     <ImageView
-        android:src="@mipmap/ic_launcher"
-        android:layout_width="wrap_content"
+        android:layout_width="51dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:src="@drawable/coffe_shop_order_launcher" />
     <TextView
         android:textColor="@android:color/white"
-        android:text="Lyna's coffee\njwluv1220@gmail.com"
+        android:text="Lyna's Cafe\njwluv1220@gmail.com"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
